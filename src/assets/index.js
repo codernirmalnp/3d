@@ -40,6 +40,7 @@ import padmodaya from './padmodaya.png'
 import reg from './reg.jfif'
 import pro from './pro.jpg'
 import an from './an.jfif'
+import mit from './mit.png'
 
 
 export {
@@ -81,6 +82,7 @@ export {
   padmodaya,
   reg,
   pro,
-  an
+  an,
+  mit
   
 };

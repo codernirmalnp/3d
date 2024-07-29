@@ -32,7 +32,8 @@ import {
     padmodaya,
     reg,
     pro,
-    an
+    an,
+    mit
   } from "../assets";
   
   export const navLinks = [
@@ -158,7 +159,7 @@ import {
     {
       title: "Bachelor in Software Engineering",
       company_name: "Melbourne Institute of Technology",
-      icon: shopify,
+      icon: mit,
       iconBg: "#383E56",
       date: "Jul 2022- Present",
       points: [
