@@ -6,7 +6,7 @@ import { fadeIn } from '../utils/motion';
 import { projects } from '../constants';
 import { Tilt } from 'react-tilt';
 import { github } from '../assets';
-const ProjectCard = ({ index,icon, name, description, tags, image, source_code_link }) => {
+export const ProjectCard = ({ index,icon, name, description, tags, image, source_code_link }) => {
     return <motion.div varients={fadeIn("up", "spring", index * 0.5, 0.75)}>
         <Tilt options={{ max: 45, scale: 1, speed: 450 }} className="bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full ">
             <div className='relative w-full h-[230px]'>
@@ -22,7 +22,7 @@ const ProjectCard = ({ index,icon, name, description, tags, image, source_code_l
                 <p className='mt-2 text-secondary text-[14px]'>{description}</p>
             </div>
             <div className='mt-4 flex flex-wrap gap-2'>
-                {tags.map((tag,index)=><p key={tag.name} className={`tax-[14px] ${tag.color}`}># {tag.name}</p>)}
+                {tags.map((tag,index)=><p key={tag.name} className={`text-[14px] ${tag.color}`}># {tag.name}</p>)}
 
             </div>
         </Tilt>

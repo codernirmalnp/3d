@@ -41,6 +41,9 @@ import reg from './reg.jfif'
 import pro from './pro.jpg'
 import an from './an.jfif'
 import mit from './mit.png'
+import tag from './tag.svg'
+import dashboard from './dashboard.svg'
+import project from './project.svg'
 
 
 export {
@@ -83,6 +86,9 @@ export {
   reg,
   pro,
   an,
-  mit
+  mit,
+  tag,
+  dashboard,
+  project
   
 };

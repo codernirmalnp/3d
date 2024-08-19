@@ -3,9 +3,11 @@ import { OrbitControls, Preload, useGLTF } from "@react-three/drei"
 import { Canvas } from '@react-three/fiber'
 
 import CanvasLoader from '../Loader'
+import useGL from "./hook"
 
 const Computers = ({isMobile}) => {
-    const computer = useGLTF("./desktop_pc/scene.gltf");
+    const computer=useGL()
+    
     return (
         <mesh>
             <hemisphereLight intensity={0.15} groundColor='black' />

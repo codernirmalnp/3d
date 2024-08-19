@@ -1,17 +1,43 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
+import { Outlet, useNavigate, } from 'react-router-dom';
+import { UserAuthContext } from './AuthContext';
+import { account } from '../api';
+
+
 
 const Dashboard = () => {
+    const [isActive, setIsActive] = useState('dashboard')
+    const { setUser } = useContext(UserAuthContext);
+    const navigate = useNavigate()
+    const handleLogout = async () => {
+        try {
+            await account.deleteSession("current");
+            setUser(null);
+            navigate("/login");
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
     return (
-        <div className='relative sm:p-8 p-4 bg-[#13131a] min-h-screen flex flex-row'>
+        <div className='relative sm:p-8 p-4   min-h-screen flex flex-row'>
             <div className='sm:flex hidden mr-10 relative'>
-                <Sidebar />
+                <Sidebar isActive={isActive} setIsActive={setIsActive} handleLogout=
+                    {handleLogout} />
             </div>
 
             <div className='flex-1 max-sm:w-full max-w-[1280px] mx-auto sm:pr-5'>
-                <Navbar />
+                <Navbar isActive={isActive} setIsActive={setIsActive}  handleLogout=
+                    {handleLogout}/>
+                <div className='mt-32'>
+                    <Outlet />
+                </div>
+
             </div>
+
         </div>
     )
 }

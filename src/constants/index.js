@@ -33,7 +33,10 @@ import {
     reg,
     pro,
     an,
-    mit
+    mit,
+    dashboard,
+    tag,
+    project
   } from "../assets";
   
   export const navLinks = [
@@ -72,8 +75,10 @@ import {
   
   const technologies = [
    
- 
- 
+    {
+      name: "Html",
+      icon: html,
+    },
     {
       name: "TypeScript",
       icon: typescript,
@@ -215,48 +220,66 @@ import {
       image: pro,
       source_code_link: "https://public.tableau.com/app/profile/nirmal.dangi/viz/Dataanalystprojectcyclist",
     },
+    {
+      name: "Cyclist Data Analysis",
+      description:
+        "In this project I am providing insights to stakeholder to better understand casual and member to they could convert casul to member in their app",
+      tags: [
+        {
+          name: "bigquery",
+          color: "blue-text-gradient",
+        },
+        {
+          name: "tableu",
+          color: "green-text-gradient",
+        },
+        {
+          name: "sql",
+          color: "pink-text-gradient",
+        },
+      ],
+      icon:Tableu,
+      image: pro,
+      source_code_link: "https://public.tableau.com/app/profile/nirmal.dangi/viz/Dataanalystprojectcyclist",
+    },
    
   ];
+
+  const tags= [
+    {
+      label: "bigquery",
+      value: "blue-text-gradient",
+    },
+    {
+      label: "tableu",
+      value: "green-text-gradient",
+    },
+    {
+      label: "sql",
+      value: "pink-text-gradient",
+    },]
 
   export const dashNav = [
     {
       name: 'dashboard',
-      // imgUrl: dashboard,
-      link: '/',
+      imgUrl: dashboard,
+      link: '/dashboard',
     },
     {
       name: 'Tag',
-      // imgUrl: createCampaign,
-      link: '/create-campaign',
+      imgUrl: tag,
+      link: '/tag',
     },
-    {
-      name: 'Experience',
-      // imgUrl: payment,
-      link: '/',
-      disabled: true,
-    },
+   
     {
       name: 'Project',
-      // imgUrl: withdraw,
-      link: '/',
+      imgUrl: project,
+      link: '/project',
       disabled: true,
     },
-    {
-      name: 'Technology',
-      // imgUrl: profile,
-      link: '/profile',
-    },
-    {
-      name: 'Testomonial',
-      imgUrl: profile,
-      link: '/profile',
-    },
-    {
-      name: 'logout',
-      imgUrl: logout,
-      link: '/',
-      disabled: true,
-    },
+   
+  
+ 
   ];
   
-  export { services, technologies, experiences, testimonials, projects};
+  export { services, technologies, experiences, testimonials, projects,tags};
