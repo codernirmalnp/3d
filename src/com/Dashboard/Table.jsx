@@ -78,7 +78,7 @@ export function Table({ columns, rows, pagination, setPagination }) {
                                 {row.getVisibleCells().map(cell => {
                                     return (
                                         <td key={cell.id} className='p-4 text-left'>
-                                            <p className='block antialiased font-sans text-md font-bold leading-normal text-blue-gray-900 font-normal'>
+                                            <p className='block antialiased font-sans text-md  leading-normal text-blue-gray-900 font-normal'>
                                                 {flexRender(
                                                     cell.column.columnDef.cell,
                                                     cell.getContext()
