@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { db, storage } from '../api'
 import { ID } from 'appwrite'
 import toast from 'react-hot-toast'
+import { UserAuthContext } from './AuthContext'
 
 const AddCertificate = ({ showModal, loadData }) => {
-  
+    const { credentials } = useContext(UserAuthContext)
+    const { database, certificate_collection, certificate_bucket } = credentials
+
+
     const [form, setForm] = useState({
         title: '',
         description: '',
@@ -18,7 +22,7 @@ const AddCertificate = ({ showModal, loadData }) => {
         if (e.currentTarget.files[0]) {
 
             const promise = storage.createFile(
-                '66b6b129002629cece9f',
+                certificate_bucket ,
                 ID.unique(),
                 e.currentTarget.files[0])
             promise.then(function (response) {
@@ -48,7 +52,7 @@ const AddCertificate = ({ showModal, loadData }) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            await db.createDocument("66b6ba35003bd0a4efa4", "66b6ba3f002b5d818ab7", ID.unique(), { title: form.title, description: form.description, image: form.image });
+            await db.createDocument(database, certificate_collection, ID.unique(), { title: form.title, description: form.description, image: form.image });
             setForm({ title: '', description: '', image: '' })
             toast.success("Certificate created 🎉");
             showModal(false)

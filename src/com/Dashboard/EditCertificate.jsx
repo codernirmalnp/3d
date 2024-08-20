@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { db, storage } from '../api'
 import { ID } from 'appwrite'
 import toast from 'react-hot-toast'
+import { UserAuthContext } from './AuthContext'
 
 const EditCertificate = ({ showModal, loadData, editId }) => {
+    const { credentials } = useContext(UserAuthContext)
+    const { database, certificate_collection, certificate_bucket } = credentials
+
 
 
     const [form, setForm] = useState({
@@ -16,7 +20,7 @@ const EditCertificate = ({ showModal, loadData, editId }) => {
     const [loading, setLoading] = useState(false)
     const deleteFile = async (fileId) => {
         try {
-            await storage.deleteFile('66b6b129002629cece9f', fileId)
+            await storage.deleteFile(certificate_bucket, fileId)
         } catch (error) {
             console.error('Failed to delete file:', error);
         }
@@ -33,7 +37,7 @@ const EditCertificate = ({ showModal, loadData, editId }) => {
             setLoading(true)
 
             const promise = storage.createFile(
-                '66b6b129002629cece9f',
+                certificate_bucket,
                 ID.unique(),
                 e.currentTarget.files[0])
             promise.then(function (response) {
@@ -68,8 +72,8 @@ const EditCertificate = ({ showModal, loadData, editId }) => {
         try {
 
             await db.updateDocument(
-                "66b6ba35003bd0a4efa4",
-                "66b6ba3f002b5d818ab7",
+                database,
+                certificate_collection,
                 form.id,
                 {
                     title: form.title,
@@ -92,7 +96,7 @@ const EditCertificate = ({ showModal, loadData, editId }) => {
     }
     async function getImageById(fileId) {
         try {
-            const file = await storage.getFileView('66b6b129002629cece9f', fileId);
+            const file = await storage.getFileView(certificate_bucket, fileId);
             setImage(file);
         } catch (error) {
             console.error('Error fetching file:', error);
@@ -105,7 +109,7 @@ const EditCertificate = ({ showModal, loadData, editId }) => {
 
 
     }, [editId?.image])
-    console.log(editId)
+
 
 
     return (

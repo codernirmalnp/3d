@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 import { Outlet, useNavigate, } from 'react-router-dom';
-import { UserAuthContext } from './AuthContext';
+import { UserAuthContext} from './AuthContext';
 import { account } from '../api';
 
 
@@ -23,22 +23,24 @@ const Dashboard = () => {
 
 
     return (
-        <div className='relative sm:p-8 p-4   min-h-screen flex flex-row'>
-            <div className='sm:flex hidden mr-10 relative'>
-                <Sidebar isActive={isActive} setIsActive={setIsActive} handleLogout=
-                    {handleLogout} />
-            </div>
+      
+            <div className='relative sm:p-8 p-4   min-h-screen flex flex-row'>
+                <div className='sm:flex hidden mr-10 relative'>
+                    <Sidebar isActive={isActive} setIsActive={setIsActive} handleLogout=
+                        {handleLogout} />
+                </div>
 
-            <div className='flex-1 max-sm:w-full max-w-[1280px] mx-auto sm:pr-5'>
-                <Navbar isActive={isActive} setIsActive={setIsActive}  handleLogout=
-                    {handleLogout}/>
-                <div className='mt-32'>
-                    <Outlet />
+                <div className='flex-1 max-sm:w-full max-w-[1280px] mx-auto sm:pr-5'>
+                    <Navbar isActive={isActive} setIsActive={setIsActive} handleLogout=
+                        {handleLogout} />
+                    <div className='mt-32'>
+                        <Outlet />
+                    </div>
+
                 </div>
 
             </div>
-
-        </div>
+     
     )
 }
 

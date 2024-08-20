@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import {useNavigate} from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import Select from 'react-select';
 import toast from 'react-hot-toast';
 import { ID } from 'appwrite';
 
 import { db, storage } from '../api';
+import { UserAuthContext } from './AuthContext';
 
 
 const colorStyles = {
@@ -23,6 +24,9 @@ const colorStyles = {
 
 
 const CreateProject = () => {
+
+    const { credentials } = useContext(UserAuthContext)
+    const { database, project_collection, project_bucket, tag_collection } = credentials
     const [tag, setTag] = useState([])
     const [selectedOptions, setSelectedOptions] = useState([]);
     const navigation = useNavigate()
@@ -61,7 +65,7 @@ const CreateProject = () => {
         e.preventDefault()
 
         try {
-            await db.createDocument("66b6ba35003bd0a4efa4", "66c1492e0013affa2d08", ID.unique(), {
+            await db.createDocument(database, project_collection, ID.unique(), {
                 title: form.title,
                 description: form.description,
                 tag: tagvalue,
@@ -88,7 +92,7 @@ const CreateProject = () => {
 
     }
     const loadTag = async () => {
-        const response = await db.listDocuments("66b6ba35003bd0a4efa4", "66beec5b003859225ac0")
+        const response = await db.listDocuments(database, tag_collection)
         const res = response.documents.map(({ $id, name, color }) => ({
 
             value: $id,
@@ -100,7 +104,7 @@ const CreateProject = () => {
     }
     const deleteFile = async (fileId) => {
         try {
-            await storage.deleteFile('66c1491a001f86a71ab6', fileId)
+            await storage.deleteFile(project_bucket, fileId)
         } catch (error) {
             console.error('Failed to delete file:', error);
         }
@@ -116,7 +120,7 @@ const CreateProject = () => {
         if (e.currentTarget.files[0]) {
 
             const promise = storage.createFile(
-                '66c1491a001f86a71ab6',
+                project_bucket,
                 ID.unique(),
                 e.currentTarget.files[0])
             promise.then(function (response) {

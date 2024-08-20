@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import Select from 'react-select';
 import { db, storage } from '../api';
 import toast from 'react-hot-toast';
 import { ID } from 'appwrite';
 import { useNavigate, useParams } from 'react-router-dom';
+import { UserAuthContext } from './AuthContext';
 
 const colorStyles = {
     option: (styles, { data }) => {
@@ -21,6 +22,8 @@ const colorStyles = {
 
 
 const EditProject = () => {
+    const { credentials } = useContext(UserAuthContext)
+    const { database, project_collection, project_bucket, tag_collection } = credentials
     const [tag, setTag] = useState([])
     const [image, setImage] = useState()
     const navigation = useNavigate()
@@ -63,8 +66,8 @@ const EditProject = () => {
         try {
 
             await db.updateDocument(
-                "66b6ba35003bd0a4efa4",
-                "66c1492e0013affa2d08",
+                database,
+                project_collection,
                 form.id,
                 {
                     title: form.title,
@@ -94,7 +97,7 @@ const EditProject = () => {
     }
 
     const loadData = async (id) => {
-        const response = await db.getDocument("66b6ba35003bd0a4efa4", "66c1492e0013affa2d08", id);
+        const response = await db.getDocument(database, project_collection, id);
         if (response) {
             setForm({ title: response.title, description: response.description, image: response.image, tag: response.tag, link: response.link, id: response.$id })
             setSelectedOptions(response.tag.map(({ $id, name, color }) => ({
@@ -120,7 +123,7 @@ const EditProject = () => {
 
 
     const loadTag = async () => {
-        const response = await db.listDocuments("66b6ba35003bd0a4efa4", "66beec5b003859225ac0")
+        const response = await db.listDocuments(database, tag_collection)
         const res = response.documents.map(({ $id, name, color }) => ({
 
             value: $id,
@@ -138,11 +141,11 @@ const EditProject = () => {
         if (e.currentTarget.files[0]) {
 
             const response = await storage.createFile(
-                '66c1491a001f86a71ab6',
+                project_bucket,
                 ID.unique(),
                 e.currentTarget.files[0])
 
-            console.log(response, "image id")
+
             setForm({
                 ...form,
                 [name]: response.$id,
@@ -157,7 +160,7 @@ const EditProject = () => {
 
     async function getImageById(fileId) {
         try {
-            const file = await storage.getFileView('66c1491a001f86a71ab6', fileId);
+            const file = await storage.getFileView(project_bucket, fileId);
             setImage(file);
         } catch (error) {
             console.error('Error fetching file:', error);
@@ -180,7 +183,7 @@ const EditProject = () => {
     }, [id])
 
 
-    console.log(form)
+
 
 
 

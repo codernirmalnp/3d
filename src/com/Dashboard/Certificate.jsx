@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 
 import { Table } from "./Table"
 
@@ -8,10 +8,16 @@ import AddCertificate from "./AddCertificate"
 import EditCertificate from "./EditCertificate"
 import { db, storage } from "../api"
 import toast from "react-hot-toast"
+import { UserAuthContext } from "./AuthContext"
 
 
 
 const Certificate = () => {
+  const { credentials } = useContext(UserAuthContext)
+  const { database, certificate_collection, certificate_bucket } = credentials
+  
+
+
   const [modal, showModal] = useState(false)
 
 
@@ -25,7 +31,7 @@ const Certificate = () => {
 
 
   const loadData = async () => {
-    const result = await fetchPaginatedData(pagination.pageIndex, pagination.pageSize);
+    const result = await fetchPaginatedData(pagination.pageIndex, pagination.pageSize,database,certificate_collection);
     setCertificate(result)
   };
 
@@ -34,9 +40,9 @@ const Certificate = () => {
   const handleDelete = async (data) => {
 
     if (data.image) {
-      await storage.deleteFile('66b6b129002629cece9f', data.image)
+      await storage.deleteFile(certificate_bucket, data.image)
     }
-    const promise = db.deleteDocument("66b6ba35003bd0a4efa4", "66b6ba3f002b5d818ab7", data.$id)
+    const promise = db.deleteDocument(database, certificate_collection, data.$id)
     promise.then(res => {
       toast.success("Delete successfull 🎉")
       loadData()

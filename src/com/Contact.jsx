@@ -4,8 +4,9 @@ import emailjs from "@emailjs/browser";
 
 import { styles } from "../styles";
 // import  EarthCanvas  from "./canvas/EarthCanvas";
-import  SectionWrapper  from "../hoc/SectionWrapper";
+import SectionWrapper from "../hoc/SectionWrapper";
 import { slideIn } from "../utils/motion";
+import toast from "react-hot-toast";
 
 const Contact = () => {
   const formRef = useRef();
@@ -37,9 +38,9 @@ const Contact = () => {
         import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
         {
           from_name: form.name,
-          to_name: "JavaScript Mastery",
+          to_name: "Nirmal Dangi",
           from_email: form.email,
-          to_email: "sujata@jsmastery.pro",
+          to_email: "codernirmal@gmail.com",
           message: form.message,
         },
         import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY
@@ -47,7 +48,7 @@ const Contact = () => {
       .then(
         () => {
           setLoading(false);
-          alert("Thank you. I will get back to you as soon as possible.");
+          toast.success("Thank you. I will get back to you as soon as possible.");
 
           setForm({
             name: "",
@@ -57,9 +58,9 @@ const Contact = () => {
         },
         (error) => {
           setLoading(false);
-          console.error(error);
 
-          alert("Ahh, something went wrong. Please try again.");
+
+          toast.error("Ahh, something went wrong. Please try again.");
         }
       );
   };

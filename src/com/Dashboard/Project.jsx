@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import toast from "react-hot-toast"
 import { useNavigate } from 'react-router-dom'
 import { Table } from './Table'
 import { Query } from "appwrite";
 import { db, storage } from "../api";
+import { UserAuthContext } from './AuthContext';
 
 
 
-export const fetchPaginatedData = async (page, limit) => {
+export const fetchPaginatedData = async (page, limit, database, collection) => {
     const offset = (page - 1) * limit < 0 ? 0 : page * limit
     try {
-        const response = await db.listDocuments("66b6ba35003bd0a4efa4", "66c1492e0013affa2d08", [
+        const response = await db.listDocuments(database, collection, [
             Query.limit(limit),
             Query.offset(offset)
         ]);
@@ -35,6 +36,9 @@ export const fetchPaginatedData = async (page, limit) => {
 
 
 const Project = () => {
+    const { credentials } = useContext(UserAuthContext)
+    const { database, project_collection, project_bucket } = credentials
+
     const navigate = useNavigate()
     const [project, setProject] = useState([])
     const [pagination, setPagination] = React.useState({
@@ -44,7 +48,7 @@ const Project = () => {
 
 
     const loadData = async () => {
-        const result = await fetchPaginatedData(pagination.pageIndex, pagination.pageSize);
+        const result = await fetchPaginatedData(pagination.pageIndex, pagination.pageSize, database, project_collection);
         setProject(result)
     };
 
@@ -120,9 +124,9 @@ const Project = () => {
     const handleDelete = async (data) => {
 
         if (data.image) {
-            await storage.deleteFile('66c1491a001f86a71ab6', data.image)
+            await storage.deleteFile(project_bucket, data.image)
         }
-        const promise = db.deleteDocument("66b6ba35003bd0a4efa4", "66c1492e0013affa2d08", data.$id)
+        const promise = db.deleteDocument(database, project_collection, data.$id)
         promise.then(res => {
             toast.success("Delete successfull 🎉")
             loadData()

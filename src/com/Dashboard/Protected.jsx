@@ -2,8 +2,7 @@
 import { useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom'
 import { UserAuthContext } from './AuthContext';
-import { Loader } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
+
 
 
 const PrivateRoutes = () => {

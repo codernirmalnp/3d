@@ -2,10 +2,10 @@ import { Query } from "appwrite";
 import { db } from "../api";
 
 
-export const fetchPaginatedData = async (page, limit) => {
-    const offset =  (page - 1) * limit  < 0 ? 0:page  * limit
+export const fetchPaginatedData = async (page, limit, database, collection) => {
+    const offset = (page - 1) * limit < 0 ? 0 : page * limit
     try {
-        const response = await db.listDocuments("66b6ba35003bd0a4efa4", "66b6ba3f002b5d818ab7", [
+        const response = await db.listDocuments(database, collection, [
             Query.limit(limit),
             Query.offset(offset)
         ]);

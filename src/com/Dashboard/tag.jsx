@@ -1,12 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 
 
 import toast from 'react-hot-toast';
 import { db } from '../api';
 import { ID } from 'appwrite';
+import { UserAuthContext } from './AuthContext';
 
 
 const Tag = () => {
+    const { credentials } = useContext(UserAuthContext)
+    const { database, tag_collection } = credentials
 
     const formRef = useRef()
     const [loading, setLoading] = useState(false);
@@ -22,7 +25,7 @@ const Tag = () => {
         e.preventDefault()
         if (!editId) {
             try {
-                await db.createDocument("66b6ba35003bd0a4efa4", "66beec5b003859225ac0", ID.unique(), { name: form.name, color: form.color });
+                await db.createDocument(database, tag_collection, ID.unique(), { name: form.name, color: form.color });
                 setForm({ name: '', color: 'green-text-gradient' })
                 toast.success("Tag created 🎉");
                 loadData()
@@ -36,10 +39,10 @@ const Tag = () => {
 
         }
         try {
-            await db.updateDocument("66b6ba35003bd0a4efa4", "66beec5b003859225ac0", editId, { name: form.name, color: form.color });
+            await db.updateDocument(database, tag_collection, editId, { name: form.name, color: form.color });
             setForm({ name: '', color: 'green-text-gradient' })
             setEditId("")
-            toast.success("Tag updatred 🎉");
+            toast.success("Tag updated🎉");
             loadData()
 
 
@@ -65,14 +68,14 @@ const Tag = () => {
 
     };
     const loadData = async () => {
-        const response = await db.listDocuments("66b6ba35003bd0a4efa4", "66beec5b003859225ac0")
+        const response = await db.listDocuments(database, tag_collection)
         setTag(response.documents)
     }
 
     const deleteTag = async (id) => {
 
         try {
-            await db.deleteDocument("66b6ba35003bd0a4efa4", "66beec5b003859225ac0", id)
+            await db.deleteDocument(database, tag_collection, id)
             toast.success("Tag deleted 🎉");
             loadData()
         }

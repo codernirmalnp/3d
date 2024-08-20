@@ -6,14 +6,16 @@ import { fadeIn } from '../utils/motion';
 import { projects } from '../constants';
 import { Tilt } from 'react-tilt';
 import { github } from '../assets';
-export const ProjectCard = ({ index,icon, name, description, tags, image, source_code_link }) => {
+import { storage } from './api';
+export const ProjectCard = ({ index, icon, name, description, tag, image, source_code_link }) => {
+    const imageURL = storage.getFileView('66c1491a001f86a71ab6', image)
     return <motion.div varients={fadeIn("up", "spring", index * 0.5, 0.75)}>
         <Tilt options={{ max: 45, scale: 1, speed: 450 }} className="bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full ">
             <div className='relative w-full h-[230px]'>
-                <img src={image} alt={name} className='w-full h-full object-cover rounded-2xl ' />
+                <img src={imageURL} alt={name} className='w-full h-full object-cover rounded-2xl ' />
                 <div className='absolute inset-0 flex justify-end m-3 card-img_hover'>
                     <div onClick={() => window.open(source_code_link, '_blank')} className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer'>
-                        <img src={icon ? icon:github} className="w-1/2 h-1/2 object-contain " alt="" />
+                        <img src={icon ? icon : github} className="w-1/2 h-1/2 object-contain " alt="" />
                     </div>
                 </div>
             </div>
@@ -22,14 +24,14 @@ export const ProjectCard = ({ index,icon, name, description, tags, image, source
                 <p className='mt-2 text-secondary text-[14px]'>{description}</p>
             </div>
             <div className='mt-4 flex flex-wrap gap-2'>
-                {tags.map((tag,index)=><p key={tag.name} className={`text-[14px] ${tag.color}`}># {tag.name}</p>)}
+                {tag.map((tag, index) => <p key={tag.name} className={`text-[14px] ${tag.color}`}># {tag.name}</p>)}
 
             </div>
         </Tilt>
     </motion.div>
 
 }
-const Works = () => {
+const Works = ({ data }) => {
     return (
         <>
             <motion.div>
@@ -45,7 +47,7 @@ const Works = () => {
 
             </div>
             <div className="mt-20 flex flex-wrap gap-7">
-                {projects.map((project, index) => (
+                {data && data.map((project, index) => (
                     <ProjectCard key={`project-${index}`} index={index} {...project} />
                 ))}
             </div>
